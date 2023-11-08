@@ -5,35 +5,47 @@ import Container from '@material-ui/core/Container'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import { makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles({
   field: {
     marginTop: 20,
     marginBottom: 20,
-    display: 'block'
+    display: 'block',
   }
 })
 
 export default function Create() {
   const classes = useStyles()
+
   const [title, setTitle] = useState('')
   const [details, setDetails] = useState('')
   const [titleError, setTitleError] = useState(false)
   const [detailsError, setDetailsError] = useState(false)
+  const [category, setCategory] = useState('money')
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault()
     setTitleError(false)
     setDetailsError(false)
 
-    if (title == '') {
+    if (title === '') {
       setTitleError(true)
     }
-    if (details == '') {
+    if (details === '') {
       setDetailsError(true)
     }
     if (title && details) {
-      console.log(title, details)
+      fetch('http://localhost:8000/notes', {
+        method: 'POST',
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({ title, details, category })
+      }).then(() => history.push('/'))
+      
     } 
   }
 
@@ -70,6 +82,17 @@ export default function Create() {
           error={detailsError}
         />
 
+        <FormControl className={classes.field}>
+          <FormLabel>Note Category</FormLabel>
+          <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
+              <FormControlLabel value="money" control={<Radio />} label="Money" />
+              <FormControlLabel value="todos" control={<Radio />} label="Todos" />
+              <FormControlLabel value="reminders" control={<Radio />} label="Reminders" />
+              <FormControlLabel value="work" control={<Radio />} label="Work" />
+          </RadioGroup>
+        </FormControl>
+
+        <br />
         <Button
           type="submit" 
           color="secondary" 
