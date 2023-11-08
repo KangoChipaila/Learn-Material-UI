@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppBar, Toolbar, makeStyles } from '@material-ui/core'
+import { AppBar, Avatar, Toolbar, makeStyles } from '@material-ui/core'
 import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme) => {
     ,
     date: {
         flexGrow: 1
+    },
+    avatar: {
+        marginLeft: theme.spacing(2)
     }
   }
 })
@@ -76,6 +79,7 @@ export default function Layout({ children }) {
             <Typography>
                 Mario
             </Typography>
+            <Avatar className={classes.avatar} src='./mario-av.png'/>
         </Toolbar>
       </AppBar>
 
